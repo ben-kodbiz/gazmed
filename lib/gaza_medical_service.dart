@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'dart:io';
 import 'package:cactus/cactus.dart';
 import 'services/rag_service.dart';
+import 'services/document_processor.dart';
+import 'database/medical_database.dart';
 
 class GazaMedicalService {
   RAGService? _ragService;
@@ -11,6 +14,43 @@ class GazaMedicalService {
     'Initializing Gaza Medical Assistant with RAG...',
   );
   final ValueNotifier<String?> error = ValueNotifier(null);
+
+  Future<void> processUploadedDocument(File file) async {
+    if (_ragService == null) {
+      debugPrint('RAGService not initialized. Cannot process document.');
+      return;
+    }
+
+    isLoading.value = true;
+    status.value = 'Processing uploaded document: ${file.path.split('/').last}...';
+
+    try {
+      final documentProcessor = DocumentProcessor();
+      final extractedText = await documentProcessor.extractText(file);
+      final chunks = await documentProcessor.chunkText(extractedText, fileName: file.path.split('/').last);
+
+      for (final chunk in chunks) {
+        final embedding = await _ragService!.embedding(chunk.text);
+        await _ragService!.addKnowledgeEntry(
+          MedicalKnowledgeEntry(
+            entryId: chunk.id,
+            category: chunk.category,
+            text: chunk.text,
+            source: chunk.source,
+            priority: chunk.priority,
+            keywords: chunk.keywords,
+            embedding: embedding,
+          ),
+        );
+      }
+      status.value = 'Document "${file.path.split('/').last}" processed and added to knowledge base.';
+    } catch (e) {
+      debugPrint('Error processing document: $e');
+      error.value = 'Failed to process document: $e';
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<void> initialize() async {
     try {
@@ -339,6 +379,20 @@ For specific medical advice, please consult qualified healthcare providers who c
       'Treating diarrhea and vomiting',
       'Recognizing heart attack symptoms',
     ];
+  }
+
+  Future<Map<String, dynamic>> getSystemInfo() async {
+    if (_ragService == null) {
+      return {
+        'initialized': false,
+        'embeddings_generated': false,
+        'total_entries': 0,
+        'entries_with_embeddings': 0,
+        'categories': {},
+        'model_loaded': false,
+      };
+    }
+    return await _ragService!.getSystemInfo();
   }
 
   void dispose() {

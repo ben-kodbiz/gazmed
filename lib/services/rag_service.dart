@@ -21,6 +21,17 @@ class RAGService {
   Stream<String> get statusStream => _statusController.stream;
   Stream<double> get progressStream => _progressController.stream;
 
+  Future<List<double>> embedding(String text) async {
+    if (_model == null) {
+      throw Exception('Model not loaded for embedding generation.');
+    }
+    return await _model!.embedding(text);
+  }
+
+  Future<void> addKnowledgeEntry(MedicalKnowledgeEntry entry) async {
+    await _database.insertKnowledgeEntry(entry);
+  }
+
   Future<void> initialize() async {
     if (_isInitialized) return;
 

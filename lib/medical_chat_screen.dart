@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'gaza_medical_service.dart';
 import 'package:cactus/cactus.dart';
 import 'screens/document_upload_screen.dart';
@@ -52,6 +53,50 @@ class _MedicalChatScreenState extends State<MedicalChatScreen> {
     setState(() => _showQuickQueries = false);
   }
 
+  void _handleDocumentUpload(File file) async {
+    debugPrint('Document uploaded: ${file.path}, content length: ${await file.length()}');
+    // Pass the content to the medical service for RAG processing
+    await widget.medicalService.processUploadedDocument(file);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Document "${file.path.split('/').last}" processed for RAG.')),
+      );
+    }
+  }
+
+  void _showRAGInfoDialog() async {
+    final info = await widget.medicalService.getSystemInfo();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('RAG System Information'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Initialized: ${info['initialized']}'),
+              Text('Embeddings Generated: ${info['embeddings_generated']}'),
+              Text('Total Entries: ${info['total_entries']}'),
+              Text('Entries with Embeddings: ${info['entries_with_embeddings']}'),
+              Text('Model Loaded: ${info['model_loaded']}'),
+              const Divider(),
+              Text('Categories:'),
+              for (var entry in (info['categories'] as Map).entries)
+                Text('  ${entry.key}: ${entry.value} entries'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +116,7 @@ class _MedicalChatScreenState extends State<MedicalChatScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DocumentUploadScreen()),
+                MaterialPageRoute(builder: (context) => DocumentUploadScreen(onDocumentUploaded: _handleDocumentUpload)),
               );
             },
             tooltip: 'Upload Medical Documents',
@@ -91,6 +136,11 @@ class _MedicalChatScreenState extends State<MedicalChatScreen> {
                         },
               );
             },
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: _showRAGInfoDialog,
+            tooltip: 'RAG System Info',
           ),
         ],
       ),
@@ -193,39 +243,7 @@ class _MedicalChatScreenState extends State<MedicalChatScreen> {
           );
         },
       ),
-      floatingActionButton: ValueListenableBuilder<String?>(
-        valueListenable: widget.medicalService.error,
-        builder: (context, error, _) {
-          return ValueListenableBuilder<bool>(
-            valueListenable: widget.medicalService.isLoading,
-            builder: (context, isLoading, _) {
-              return ValueListenableBuilder<List<ChatMessage>>(
-                valueListenable: widget.medicalService.messages,
-                builder: (context, messages, _) {
-                  // Hide FAB during initial loading or error states
-                  if (error != null || (isLoading && messages.isEmpty)) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DocumentUploadScreen(),
-                        ),
-                      );
-                    },
-                    backgroundColor: Colors.blue,
-                    tooltip: 'Upload Medical Documents',
-                    child: const Icon(Icons.add_circle, color: Colors.white),
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
+      
     );
   }
 

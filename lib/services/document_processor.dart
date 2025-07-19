@@ -1,8 +1,8 @@
-import 'dart:co';
+import 'dart:io';
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf_text/pdf_text.dart';
-import '../screens/document_upload_screen.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
 
 class DocumentProcessor {
   static const int _maxChunkSize = 500; // Maximum characters per chunk
@@ -28,8 +28,9 @@ class DocumentProcessor {
   /// Extract text from PDF files
   Future<String> _extractFromPDF(File file) async {
     try {
-      final document = await PDFDoc.fromFile(file);
-      final text = await document.text;
+      final PdfDocument document = PdfDocument(inputBytes: file.readAsBytesSync());
+      String text = PdfTextExtractor(document).extractText();
+      document.dispose();
       return text;
     } catch (e) {
       throw Exception('Failed to extract text from PDF: $e');
@@ -318,4 +319,20 @@ class DocumentChunk {
       'keywords': keywords,
     };
   }
+}
+
+class UploadedDocument {
+  final String id;
+  final String fileName;
+  final String fileType;
+  final int chunkCount;
+  final DateTime uploadDate;
+
+  UploadedDocument({
+    required this.id,
+    required this.fileName,
+    required this.fileType,
+    required this.chunkCount,
+    required this.uploadDate,
+  });
 }

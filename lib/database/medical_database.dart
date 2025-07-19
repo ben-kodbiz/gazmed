@@ -228,6 +228,15 @@ class MedicalDatabase {
     );
   }
 
+  Future<void> insertKnowledgeEntry(MedicalKnowledgeEntry entry) async {
+    final db = await database;
+    await db.insert(
+      _knowledgeTable,
+      entry.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
   Future<List<MedicalKnowledgeEntry>> getAllEntries() async {
     final db = await database;
     final maps = await db.query(
