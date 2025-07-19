@@ -1,3 +1,42 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:102a63469ed2f7cf4fb33de189442c5810b926fcbcdc09b9cd73c7abb2f0cd6c
-size 617
+name: gaza_medical_assistant
+description: "Offline medical assistant for Gaza using AI and RAG system."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.0.0
+  path_provider: ^2.0.0
+
+  cactus: 
+    path: ../
+
+  # Database for RAG
+  sqflite: ^2.3.0
+  path: ^1.8.3
+
+  # Document upload dependencies
+  file_picker: ^8.0.0+1
+  archive: ^3.4.10
+  crypto: ^3.0.3
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/models/

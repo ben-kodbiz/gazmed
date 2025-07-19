@@ -1,3 +1,104 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b6784355b7506f3e76f9d639d1f9249da5bea8ce43b642b598cdc5aa217e669c
-size 5237
+{
+  "medical_guidelines": [
+    {
+      "id": "fever_management",
+      "category": "General Medicine",
+      "symptoms": ["fever", "high temperature", "chills", "sweating"],
+      "condition": "Fever Management",
+      "description": "Fever is a temporary increase in body temperature, often due to illness",
+      "treatment": "Rest, increase fluid intake, paracetamol/acetaminophen 500-1000mg every 4-6 hours (max 4g/day), ibuprofen 200-400mg every 6-8 hours. Seek medical attention if fever >39°C (102°F) persists >3 days",
+      "warning_signs": ["difficulty breathing", "severe headache", "stiff neck", "confusion", "persistent vomiting"],
+      "priority": "medium"
+    },
+    {
+      "id": "wound_care",
+      "category": "Emergency Medicine",
+      "symptoms": ["cut", "wound", "bleeding", "laceration"],
+      "condition": "Wound Care",
+      "description": "Proper wound care prevents infection and promotes healing",
+      "treatment": "Clean hands first. Stop bleeding with direct pressure. Clean wound with clean water. Apply antibiotic ointment if available. Cover with sterile bandage. Change dressing daily",
+      "warning_signs": ["signs of infection", "red streaks", "pus", "increased pain", "fever"],
+      "priority": "high"
+    },
+    {
+      "id": "dehydration",
+      "category": "General Medicine",
+      "symptoms": ["thirst", "dry mouth", "fatigue", "dizziness", "dark urine"],
+      "condition": "Dehydration",
+      "description": "Loss of body fluids, common in hot climates or during illness",
+      "treatment": "Oral rehydration solution (ORS): 1 liter clean water + 6 tsp sugar + 1/2 tsp salt. Drink small amounts frequently. Avoid alcohol and caffeine",
+      "warning_signs": ["severe weakness", "confusion", "rapid heartbeat", "no urination for 8+ hours"],
+      "priority": "high"
+    },
+    {
+      "id": "respiratory_distress",
+      "category": "Emergency Medicine",
+      "symptoms": ["difficulty breathing", "shortness of breath", "wheezing", "chest pain"],
+      "condition": "Respiratory Distress",
+      "description": "Difficulty breathing requiring immediate attention",
+      "treatment": "Sit upright, loosen tight clothing, ensure fresh air. If asthma: use inhaler if available. Seek immediate medical attention",
+      "warning_signs": ["blue lips or fingernails", "severe chest pain", "inability to speak", "loss of consciousness"],
+      "priority": "critical"
+    },
+    {
+      "id": "diarrhea",
+      "category": "Gastroenterology",
+      "symptoms": ["loose stools", "frequent bowel movements", "stomach cramps", "nausea"],
+      "condition": "Diarrhea",
+      "description": "Frequent loose or watery bowel movements",
+      "treatment": "Maintain hydration with ORS. BRAT diet (bananas, rice, applesauce, toast). Avoid dairy and fatty foods. Zinc supplements if available (10-20mg daily)",
+      "warning_signs": ["blood in stool", "severe dehydration", "high fever", "severe abdominal pain"],
+      "priority": "medium"
+    },
+    {
+      "id": "hypertension_crisis",
+      "category": "Cardiology",
+      "symptoms": ["severe headache", "chest pain", "difficulty breathing", "vision changes"],
+      "condition": "Hypertensive Crisis",
+      "description": "Dangerously high blood pressure requiring immediate attention",
+      "treatment": "Seek immediate medical attention. Sit upright, stay calm. Do not lower BP too quickly. If available: sublingual nifedipine 10mg",
+      "warning_signs": ["stroke symptoms", "heart attack symptoms", "kidney failure signs"],
+      "priority": "critical"
+    },
+    {
+      "id": "diabetes_emergency",
+      "category": "Endocrinology",
+      "symptoms": ["extreme thirst", "frequent urination", "confusion", "fruity breath"],
+      "condition": "Diabetic Emergency",
+      "description": "Severe high or low blood sugar requiring immediate care",
+      "treatment": "If conscious and able to swallow: give sugar/glucose. If unconscious: recovery position, seek immediate help. Monitor breathing",
+      "warning_signs": ["loss of consciousness", "severe dehydration", "difficulty breathing"],
+      "priority": "critical"
+    },
+    {
+      "id": "pain_management",
+      "category": "Pain Medicine",
+      "symptoms": ["pain", "ache", "discomfort"],
+      "condition": "Pain Management",
+      "description": "General approach to managing pain with limited resources",
+      "treatment": "Paracetamol 500-1000mg every 4-6 hours (max 4g/day). Ibuprofen 200-400mg every 6-8 hours with food. Cold/heat therapy. Rest and elevation if applicable",
+      "warning_signs": ["severe uncontrolled pain", "signs of serious underlying condition"],
+      "priority": "low"
+    }
+  ],
+  "emergency_protocols": [
+    {
+      "condition": "Cardiac Arrest",
+      "steps": [
+        "Check responsiveness and breathing",
+        "Call for help immediately",
+        "Begin CPR: 30 chest compressions, 2 rescue breaths",
+        "Continue until help arrives or person responds"
+      ]
+    },
+    {
+      "condition": "Severe Bleeding",
+      "steps": [
+        "Apply direct pressure to wound",
+        "Elevate injured area above heart if possible",
+        "Apply pressure bandage",
+        "Seek immediate medical attention"
+      ]
+    }
+  ]
+}

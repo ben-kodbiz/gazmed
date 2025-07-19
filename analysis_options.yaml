@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:61be59db7647f44397f55a30c2d2cc20524c06cab469c5be4bb28e32403d49c4
-size 64
+include: package:flutter_lints/flutter.yaml
+
+linter:
+ 
+  rules:

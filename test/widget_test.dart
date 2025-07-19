@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9bbf935876004864e349f5b715fdc9413104a7f0abe32af2fc61f22b6961c04d
-size 815
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:gaza_medical_assistant/main.dart';
+
+void main() {
+  testWidgets('Gaza Medical Assistant app loads', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const GazaMedicalApp());
+
+    // Verify that the medical assistant loads
+    expect(find.text('Gaza Medical Assistant'), findsOneWidget);
+  });
+}

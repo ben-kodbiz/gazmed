@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:578912add9c92e856c33d37923acc2ae1c75e67b8e1a7e8c4748b37e322fed3c
-size 967
+import 'package:flutter/material.dart';
+import 'package:cactus/cactus.dart';
+
+class MessageBubble extends StatelessWidget {
+  final ChatMessage message;
+
+  const MessageBubble({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    final isUser = message.role == 'user';
+
+    return Align(
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.all(12),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.8,
+        ),
+        decoration: BoxDecoration(
+          color: isUser ? Colors.blue[100] : Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          message.content,
+          style: TextStyle(color: isUser ? Colors.blue[800] : Colors.black87),
+        ),
+      ),
+    );
+  }
+}
